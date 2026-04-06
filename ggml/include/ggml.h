@@ -1679,28 +1679,32 @@ extern "C" {
         struct ggml_tensor      * a);
 
     // set elements above the diagonal to -INF
-    GGML_API struct ggml_tensor * ggml_diag_mask_inf(
+    GGML_DEPRECATED(GGML_API struct ggml_tensor * ggml_diag_mask_inf(
             struct ggml_context * ctx,
             struct ggml_tensor  * a,
-            int                   n_past);
+            int                   n_past),
+            "use ggml_tri instead");
 
     // in-place, returns view(a)
-    GGML_API struct ggml_tensor * ggml_diag_mask_inf_inplace(
+    GGML_DEPRECATED(GGML_API struct ggml_tensor * ggml_diag_mask_inf_inplace(
             struct ggml_context * ctx,
             struct ggml_tensor  * a,
-            int                   n_past);
+            int                   n_past),
+            "use ggml_tri instead");
 
     // set elements above the diagonal to 0
-    GGML_API struct ggml_tensor * ggml_diag_mask_zero(
+    GGML_DEPRECATED(GGML_API struct ggml_tensor * ggml_diag_mask_zero(
             struct ggml_context * ctx,
             struct ggml_tensor  * a,
-            int                   n_past);
+            int                   n_past),
+            "use ggml_tri instead");
 
     // in-place, returns view(a)
-    GGML_API struct ggml_tensor * ggml_diag_mask_zero_inplace(
+    GGML_DEPRECATED(GGML_API struct ggml_tensor * ggml_diag_mask_zero_inplace(
             struct ggml_context * ctx,
             struct ggml_tensor  * a,
-            int                   n_past);
+            int                   n_past),
+            "use ggml_tri instead");
 
     GGML_API struct ggml_tensor * ggml_soft_max(
             struct ggml_context * ctx,

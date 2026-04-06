@@ -3922,13 +3922,13 @@ static struct ggml_tensor * ggml_diag_mask_inf_impl(
         struct ggml_tensor  * a,
         int                   n_past,
         bool                  inplace) {
-    struct ggml_tensor * result = inplace ? ggml_view_tensor(ctx, a) : ggml_dup_tensor(ctx, a);
+    GGML_ASSERT(n_past == 0 || n_past == 1);
+    GGML_ASSERT(!inplace);
+    enum ggml_tri_type type = (n_past == 0) ? GGML_TRI_TYPE_UPPER_DIAG : GGML_TRI_TYPE_UPPER;
 
-    int32_t params[] = { n_past };
-    ggml_set_op_params(result, params, sizeof(params));
+    struct ggml_tensor * result = ggml_tri(ctx, a, type);
 
-    result->op     = GGML_OP_DIAG_MASK_INF;
-    result->src[0] = a;
+    ggml_set_op_params_f32(result, 1, -INFINITY);
 
     return result;
 }
@@ -3954,13 +3954,13 @@ static struct ggml_tensor * ggml_diag_mask_zero_impl(
         struct ggml_tensor  * a,
         int                   n_past,
         bool                  inplace) {
-    struct ggml_tensor * result = inplace ? ggml_view_tensor(ctx, a) : ggml_dup_tensor(ctx, a);
+    GGML_ASSERT((n_past == 0 || n_past == -1));
+    GGML_ASSERT(!inplace);
+    enum ggml_tri_type type = (n_past == 0) ? GGML_TRI_TYPE_LOWER_DIAG : GGML_TRI_TYPE_LOWER;
 
-    int32_t params[] = { n_past };
-    ggml_set_op_params(result, params, sizeof(params));
-
-    result->op     = GGML_OP_DIAG_MASK_ZERO;
-    result->src[0] = a;
+    struct ggml_tensor * result = ggml_tri(ctx, a, type);
+    
+    ggml_set_op_params_f32(result, 1, 0.0f);
 
     return result;
 }
